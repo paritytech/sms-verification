@@ -4,4 +4,4 @@ thumbs.db
 node_modules
 npm-debug.log
 
-credentials.json
+config/production.json

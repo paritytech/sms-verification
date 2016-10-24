@@ -1,7 +1,6 @@
 'use strict'
 
-const { id, token } = require('./credentials.json')
-const twilio = require('twilio')(id, token)
+const sendSMS = require('./send-sms')
 
 module.exports = (req, res) => {
   res.end('foo')

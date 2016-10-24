@@ -3,6 +3,7 @@
 const express = require('express')
 const corser = require('corser')
 const noCache = require('nocache')()
+const bodyParser = require('body-parser')
 
 const verify = require('./verify')
 
@@ -12,6 +13,8 @@ module.exports = api
 // CORS
 const allowed = corser.simpleRequestHeaders.concat(['User-Agent'])
 api.use(corser.create({requestHeaders: allowed}))
+
+api.use(bodyParser.json())
 
 api.post('/verify', noCache, verify)
 
