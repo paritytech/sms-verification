@@ -1,0 +1,29 @@
+{
+	"private": true,
+  "name": "sms-verification",
+  "version": "0.1.0",
+  "description": "SMS verification for Parity.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Ethcore Team <admin@ethcore.io>",
+  "maintainers": [
+    "Jannis R <mail@jannisr.de>"
+  ],
+  "license": "GPL-3.0",
+  "repository": "ethcore/sms-verification",
+  "dependencies": {
+    "express": "^4.14.0",
+    "corser": "^2.0.1",
+    "nocache": "^1.0.1",
+    "twilio": "^2.11.0"
+  },
+  "devDependencies": {
+    "standard": "^8.4.0"
+  },
+  "scripts": {
+  	"lint": "standard"
+  }
+}

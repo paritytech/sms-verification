@@ -1,0 +1,7 @@
+.DS_STORE
+thumbs.db
+
+node_modules
+npm-debug.log
+
+credentials.json
