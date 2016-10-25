@@ -19,8 +19,10 @@
     "config": "^1.21.0",
     "corser": "^2.0.1",
     "express": "^4.14.0",
+    "js-sha3": "^0.5.5",
     "nocache": "^1.0.1",
-    "twilio": "^2.11.0"
+    "twilio": "^2.11.0",
+    "web3": "^0.17.0-beta"
   },
   "devDependencies": {
     "standard": "^8.4.0"
