@@ -1,0 +1,168 @@
+[
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_who",
+        "type": "address"
+      }
+    ],
+    "name": "verified",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_new",
+        "type": "address"
+      }
+    ],
+    "name": "setOwner",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_numberHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "request",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_new",
+        "type": "uint256"
+      }
+    ],
+    "name": "setFee",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "drain",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_numberHash",
+        "type": "bytes32"
+      },
+      {
+        "name": "_tokenHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "challenge",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_token",
+        "type": "uint32"
+      }
+    ],
+    "name": "respond",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "who",
+        "type": "address"
+      }
+    ],
+    "name": "Verified",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "numberHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "Requested",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "numberHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "name": "tokenHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "Challenged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "old",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "name": "current",
+        "type": "address"
+      }
+    ],
+    "name": "NewOwner",
+    "type": "event"
+  }
+]
