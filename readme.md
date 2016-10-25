@@ -50,5 +50,5 @@ npm install --production
 node index.js
 
 # production mode
-export NODE_ENV=production; node index.js
+pm2 restart process.yml --env production
 ```

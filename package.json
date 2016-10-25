@@ -25,6 +25,9 @@
     "twilio": "^2.11.0",
     "web3": "^0.17.0-beta"
   },
+  "peerDependencies": {
+    "pm2": "^2.0.18"
+  },
   "devDependencies": {
     "standard": "^8.4.0"
   }
