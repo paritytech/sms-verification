@@ -5,26 +5,19 @@ const sendSMS = require('./send-sms')
 const shortid = require('shortid')
 
 module.exports = (req, res) => {
-  if (!req.body || typeof req.body.phoneNumber !== 'string') {
-    return res.status(400).json({
-      status: 'error',
-      message: 'Missing phoneNumber in body.'
-    })
-  }
-  const receiver = req.body.phoneNumber
-
+  const number = req.params.number
   const code = shortid.generate()
 
-  postToContract(receiver, code)
+  postToContract(number, code)
   .then((address) => {
     console.info(`Challenge sent to contract (tx ${address}).`)
 
-    sendSMS(receiver, code)
+    sendSMS(number, code)
     .then((msg) => {
-      console.info(`Verification code sent to ${receiver}.`)
+      console.info(`Verification code sent to ${number}.`)
       res.status(202).json({
         status: 'ok',
-        message: `Verification code sent to ${receiver}.`
+        message: `Verification code sent to ${number}.`
       })
     })
     .catch((err) => {

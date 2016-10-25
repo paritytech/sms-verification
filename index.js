@@ -16,7 +16,7 @@ api.use(corser.create({requestHeaders: allowed}))
 
 api.use(bodyParser.json())
 
-api.post('/verify', noCache, verify)
+api.post('/:number', noCache, verify)
 
 api.listen(3000, (err) => {
   if (err) return console.error(err)

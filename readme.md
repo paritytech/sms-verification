@@ -34,3 +34,21 @@ token=sha(code)  ^             SMS with code          |
 7. client posts response (`respond(sha(number), sha(token))`)
 
 Now, anyone can easily **check if a number is verified by calling `verified(sha3(number))`** on the contract.
+
+## Installation
+
+```shell
+git clone https://github.com/ethcore/sms-verification.git
+cd sms-verification
+npm install --production
+```
+
+## Usage
+
+```shell
+# development mode
+node index.js
+
+# production mode
+export NODE_ENV=production; node index.js
+```

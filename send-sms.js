@@ -1,12 +1,12 @@
 'use strict'
 
-const { id, token, sender } = require('config')
-const twilio = require('twilio')(id, token)
+const cfg = require('config').twilio
+const twilio = require('twilio')(cfg.id, cfg.token)
 
 const sendSMS = (receiver, code) =>
   new Promise((resolve, reject) => {
     twilio.messages.create({
-      from: sender,
+      from: cfg.sender,
       to: receiver,
       body: `Your Parity verification code is ${code}.`
     }, (err, msg) => {
