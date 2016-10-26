@@ -1,6 +1,8 @@
 //! SMS verification contract
 //! By Gav Wood, 2016.
 
+pragma solidity ^0.4.0;
+
 contract Owned {
     modifier only_owner { if (msg.sender != owner) return; _; }
 
@@ -49,7 +51,7 @@ contract ProofOfSMS is Owned, Certifier {
     event Requested(bytes32 encryptedNumber);
     event Puzzled(bytes32 indexed numberHash, bytes32 puzzleHash);
 
-    function request(bytes32 _encryptedNumber) when_fee_paid {
+    function request(bytes32 _encryptedNumber) payable when_fee_paid {
         Requested(_encryptedNumber);
     }
 

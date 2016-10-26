@@ -27,7 +27,6 @@ module.exports = (req, res) => {
         message: 'An error occured while sending the SMS.'
       })
     })
-
   })
   .catch((err) => {
     console.error(err.message)

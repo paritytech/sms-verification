@@ -13,19 +13,6 @@
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_who",
-        "type": "address"
-      }
-    ],
-    "name": "certify",
-    "outputs": [],
-    "payable": false,
-    "type": "function"
-  },
-  {
     "constant": true,
     "inputs": [
       {
@@ -48,6 +35,49 @@
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_encryptedNumber",
+        "type": "bytes32"
+      }
+    ],
+    "name": "request",
+    "outputs": [],
+    "payable": true,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_puzzleHash",
+        "type": "bytes32"
+      },
+      {
+        "name": "_numberHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "puzzle",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_new",
+        "type": "uint256"
+      }
+    ],
+    "name": "setFee",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "owner",
@@ -57,6 +87,14 @@
         "type": "address"
       }
     ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "drain",
+    "outputs": [],
     "payable": false,
     "type": "function"
   },
@@ -101,6 +139,19 @@
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_code",
+        "type": "uint32"
+      }
+    ],
+    "name": "confirm",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [
       {
@@ -121,6 +172,35 @@
     ],
     "payable": false,
     "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "encryptedNumber",
+        "type": "bytes32"
+      }
+    ],
+    "name": "Requested",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "numberHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "name": "puzzleHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "Puzzled",
+    "type": "event"
   },
   {
     "anonymous": false,
