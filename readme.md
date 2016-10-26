@@ -10,9 +10,9 @@
 The following process **verifies a number**:
 
 ```
-respond(sha(number),sha(token))
+confirm(sha(number),sha(token))
          +-------------------> +--------+
-         |                     |contract|   challenge(sha(number), token)
+         |                     |contract|   puzzle(token, sha(number))
          |       +-----------> +--------+ <-----------+
          |       |                                    |
          |       | request(sha(number))               |
@@ -28,12 +28,12 @@ token=sha(code)  ^             SMS with code          |
 1. client requests verification (`request(sha(number))`)
 2. client calls verification server (`POST /:number`)
 3. server generates `code` and computes `token`
-4. server posts challenge (`challenge(sha(number), token)`)
+4. server posts challenge (`puzzle(token, sha(number))`)
 5. server sends SMS to client (with `code`)
 6. client computes `token`
-7. client posts response (`respond(sha(number), sha(token))`)
+7. client posts response (`confirm(sha(token))`)
 
-Now, anyone can easily **check if a number is verified by calling `verified(sha3(number))`** on the contract.
+Now, anyone can easily **check if a number is verified by calling `certified(sha3(number))`** on the contract.
 
 ## Installation
 
