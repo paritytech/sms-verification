@@ -1,6 +1,7 @@
 'use strict'
 
 const express = require('express')
+const hsts = require('hsts')
 const corser = require('corser')
 const noCache = require('nocache')()
 const bodyParser = require('body-parser')
@@ -12,6 +13,8 @@ const verify = require('./verify')
 
 const api = express()
 module.exports = api
+
+api.use(hsts({maxAge: 3 * 24 * 60 * 60 * 1000})) // 3 days
 
 // CORS
 const allowed = corser.simpleRequestHeaders.concat(['User-Agent'])
