@@ -16,7 +16,7 @@ const postToContract = (number, code) =>
     const tokenHash = sha3(token)
 
     const numberHash = sha3(number)
-    contract.challenge.sendTransaction(numberHash, tokenHash, (err, address) => {
+    contract.puzzle.sendTransaction(tokenHash, numberHash, (err, address) => {
       if (err) reject(err)
       else resolve(address)
     })

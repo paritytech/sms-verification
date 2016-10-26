@@ -1,23 +1,5 @@
 [
   {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_who",
-        "type": "address"
-      }
-    ],
-    "name": "verified",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "type": "function"
-  },
-  {
     "constant": false,
     "inputs": [
       {
@@ -34,25 +16,34 @@
     "constant": false,
     "inputs": [
       {
-        "name": "_numberHash",
-        "type": "bytes32"
+        "name": "_who",
+        "type": "address"
       }
     ],
-    "name": "request",
+    "name": "certify",
     "outputs": [],
     "payable": false,
     "type": "function"
   },
   {
-    "constant": false,
+    "constant": true,
     "inputs": [
       {
-        "name": "_new",
-        "type": "uint256"
+        "name": "_who",
+        "type": "address"
+      },
+      {
+        "name": "_field",
+        "type": "string"
       }
     ],
-    "name": "setFee",
-    "outputs": [],
+    "name": "getAddress",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
     "payable": false,
     "type": "function"
   },
@@ -70,40 +61,64 @@
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [],
-    "name": "drain",
-    "outputs": [],
-    "payable": false,
-    "type": "function"
-  },
-  {
-    "constant": false,
+    "constant": true,
     "inputs": [
       {
-        "name": "_numberHash",
-        "type": "bytes32"
+        "name": "_who",
+        "type": "address"
       },
       {
-        "name": "_tokenHash",
-        "type": "bytes32"
+        "name": "_field",
+        "type": "string"
       }
     ],
-    "name": "challenge",
-    "outputs": [],
+    "name": "getUint",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "payable": false,
     "type": "function"
   },
   {
-    "constant": false,
+    "constant": true,
     "inputs": [
       {
-        "name": "_token",
-        "type": "uint32"
+        "name": "_who",
+        "type": "address"
       }
     ],
-    "name": "respond",
-    "outputs": [],
+    "name": "certified",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_who",
+        "type": "address"
+      },
+      {
+        "name": "_field",
+        "type": "string"
+      }
+    ],
+    "name": "get",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
     "payable": false,
     "type": "function"
   },
@@ -116,36 +131,7 @@
         "type": "address"
       }
     ],
-    "name": "Verified",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "numberHash",
-        "type": "bytes32"
-      }
-    ],
-    "name": "Requested",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "numberHash",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "name": "tokenHash",
-        "type": "bytes32"
-      }
-    ],
-    "name": "Challenged",
+    "name": "Confirmed",
     "type": "event"
   },
   {

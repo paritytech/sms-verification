@@ -1,69 +1,95 @@
 //! SMS verification contract
-//! By Gav Wood & Jannis R, 2016.
+//! By Gav Wood, 2016.
 
 contract Owned {
-  modifier only_owner { if (msg.sender != owner) return; _; }
+    modifier only_owner { if (msg.sender != owner) return; _; }
 
-  event NewOwner(address indexed old, address indexed current);
+    event NewOwner(address indexed old, address indexed current);
 
-  function setOwner(address _new) only_owner {
-    owner = _new;
-    NewOwner(owner, _new);
-  }
+    function setOwner(address _new) only_owner { NewOwner(owner, _new); owner = _new; }
 
-  function drain() only_owner {
-    if (!msg.sender.send(this.balance))
-      throw;
-  }
-
-  address public owner = msg.sender;
+    address public owner = msg.sender;
 }
 
-contract ProofOfSMS is Owned {
-  struct Entry {
-    bool active;
-    bytes32 numberHash;
-  }
+contract Certifier {
+    event Confirmed(address indexed who);
+    function certified(address _who) constant returns (bool);
+    function get(address _who, string _field) constant returns (bytes32) {}
+    function getAddress(address _who, string _field) constant returns (address) {}
+    function getUint(address _who, string _field) constant returns (uint) {}
+}
 
-  modifier when_fee_paid { if (msg.value < fee) return; _; }
+contract SimpleCertifier is Owned, Certifier {
+    struct Certification {
+        bool active;
+        mapping (string => bytes32) meta;
+    }
 
-  event Verified(address indexed who);
-  event Requested(bytes32 numberHash);
-  event Challenged(bytes32 indexed numberHash, bytes32 tokenHash);
+    function certify(address _who) only_owner {
+        certs[_who].active = true;
+    }
+    function certified(address _who) constant returns (bool) { return certs[_who].active; }
+    function get(address _who, string _field) constant returns (bytes32) { return certs[_who].meta[_field]; }
+    function getAddress(address _who, string _field) constant returns (address) { return address(certs[_who].meta[_field]); }
+    function getUint(address _who, string _field) constant returns (uint) { return uint(certs[_who].meta[_field]); }
 
-  function request(bytes32 _numberHash) when_fee_paid {
-    Requested(_numberHash);
-  }
+    mapping (address => Certification) certs;
+}
 
-  function challenge(bytes32 _numberHash, bytes32 _tokenHash) only_owner {
-    challenges[_tokenHash] = _numberHash;
-    reverse[_numberHash] = msg.sender;
-    Challenged(_numberHash, _tokenHash);
-  }
 
-  function respond(uint32 _token) {
-    var _tokenHash = sha3(_token);
-    var _numberHash = challenges[_tokenHash];
-    if (_numberHash == 0)
-      return;
-    delete challenges[_tokenHash];
-    if (reverse[_numberHash] != 0)
-      return; // prevent two challenges for one number
-    entries[msg.sender] = Entry(true, _numberHash);
-    Verified(msg.sender);
-  }
 
-  function verified(address _who) constant returns (bool) {
-    return entries[_who].active;
-  }
+contract ProofOfSMS is Owned, Certifier {
+    struct Entry {
+        bool active;
+        bytes32 numberHash;
+    }
 
-  function setFee(uint _new) only_owner {
-    fee = _new;
-  }
+    modifier when_fee_paid { if (msg.value < fee) return; _; }
 
-  mapping (address => Entry) entries;
-  mapping (bytes32 => address) reverse;
-  mapping (bytes32 => bytes32) challenges;
+    event Requested(bytes32 encryptedNumber);
+    event Puzzled(bytes32 indexed numberHash, bytes32 puzzleHash);
 
-  uint fee = 12 finney;
+    function request(bytes32 _encryptedNumber) when_fee_paid {
+        Requested(_encryptedNumber);
+    }
+
+    function puzzle(bytes32 _puzzleHash, bytes32 _numberHash) only_owner {
+        puzzles[_puzzleHash] = _numberHash;
+        Puzzled(_numberHash, _puzzleHash);
+    }
+
+    function confirm(uint32 _code) {
+        var numberHash = puzzles[sha3(_code)];
+        if (numberHash == 0)
+            return;
+        delete puzzles[sha3(_code)];
+        if (reverse[numberHash] != 0)
+            return;
+        entries[msg.sender] = Entry(true, numberHash);
+        reverse[numberHash] = msg.sender;
+        Confirmed(msg.sender);
+    }
+
+    function setFee(uint _new) only_owner {
+        fee = _new;
+    }
+
+    function drain() only_owner {
+        if (!msg.sender.send(this.balance))
+            throw;
+    }
+
+    function certified(address _who) constant returns (bool) {
+        return entries[_who].active;
+    }
+
+    function get(address _who, string _field) constant returns (bytes32) {
+        return entries[_who].numberHash;
+    }
+
+    mapping (address => Entry) entries;
+    mapping (bytes32 => address) reverse;
+    mapping (bytes32 => bytes32) puzzles;
+
+    uint fee = 12 finney;
 }
