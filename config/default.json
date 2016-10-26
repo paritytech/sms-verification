@@ -3,5 +3,10 @@
     "id": "ACf11ff7c6573ef9009365e4855db25a96",
     "token": "8259403f36ddc1a497e043a4af302660",
     "sender": "+15005550006"
+  },
+  "http": {
+    "port": 8080,
+    "cert": "./self-signed.cert.pem",
+    "key": "./self-signed.key.pem"
   }
 }

@@ -4,6 +4,9 @@ const express = require('express')
 const corser = require('corser')
 const noCache = require('nocache')()
 const bodyParser = require('body-parser')
+const config = require('config')
+const spdy = require('spdy')
+const fs = require('fs')
 
 const verify = require('./verify')
 
@@ -18,7 +21,11 @@ api.use(bodyParser.json())
 
 api.post('/:number', noCache, verify)
 
-api.listen(3000, (err) => {
+const server = spdy.createServer({
+  cert: fs.readFileSync(config.http.cert),
+  key: fs.readFileSync(config.http.key)
+}, api)
+server.listen(config.http.port, (err) => {
   if (err) return console.error(err)
-  console.info(`Listening on 3000.`)
+  console.info(`Listening on ${config.http.port}.`)
 })
