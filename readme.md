@@ -51,4 +51,6 @@ node index.js
 
 # production mode
 pm2 restart process.yml --env production
+# or with forever
+export NODE_ENV=production; forever start -a --uid sms-verification index.js
 ```

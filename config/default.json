@@ -5,7 +5,7 @@
     "sender": "+15005550006"
   },
   "http": {
-    "port": 8080,
+    "port": 8000,
     "cert": "./self-signed.cert.pem",
     "key": "./self-signed.key.pem"
   }

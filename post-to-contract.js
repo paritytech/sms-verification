@@ -13,11 +13,10 @@ const postToContract = (number, code) =>
     // The response to the challenge. Because arbitrary-length strings don't play nicely with contracts, we use `sha3(code)`.
     const token = sha3(code)
     // Will be stored inside the (public) contract, paired with `sha3(number)`.
-    const challenge = sha3(token)
+    const tokenHash = sha3(token)
 
-    // TODO post to contract
     const numberHash = sha3(number)
-    contract.challenge.sendTransaction(numberHash, challenge, (err, address) => {
+    contract.challenge.sendTransaction(numberHash, tokenHash, (err, address) => {
       if (err) reject(err)
       else resolve(address)
     })
