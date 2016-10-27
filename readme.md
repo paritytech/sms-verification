@@ -45,12 +45,9 @@ npm install --production
 
 ## Usage
 
-```shell
-# development mode
-node index.js
+Up to now, **the account calling `puzzle` has to be the owner of the contract.**
 
-# production mode
-pm2 restart process.yml --env production
-# or with forever
-export NODE_ENV=production; forever start -a --uid sms-verification index.js
-```
+1. Set up an account and put its password in a file.
+2. Run parity with `--jsonrpc-apis eth,personal --unlock <account-address> --password <account-password-file>`.
+3. Create a config file `config/<env>.json`, which partially overrides `config/default.json`.
+4. `export NODE_ENV=<env>; node index.js`

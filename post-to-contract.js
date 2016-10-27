@@ -1,6 +1,7 @@
 'use strict'
 
-const { address, owner } = require('config')
+const { address, owner, passwordFile } = require('config')
+const password = require('fs').readFileSync(passwordFile, {encoding: 'utf8'}).trim()
 const abi = require('./SMSVerification.abi.json')
 
 const Web3 = require('web3')
@@ -8,6 +9,17 @@ const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
 const sha3 = web3.sha3
 
 const contract = web3.eth.contract(abi).at(address)
+
+// TODO use `web3._extend` for this
+const signAndSendTransaction = (data, password, cb) =>
+  web3._requestManager.sendAsync({
+    method: 'personal_signAndSendTransaction',
+    params: [data, password]
+  }, (err, data) => {
+    console.log('data', err, data)
+    if (err) cb(err)
+    else cb(null, data.result)
+  })
 
 const postToContract = (number, code) =>
   new Promise((resolve, reject) => {
@@ -20,9 +32,11 @@ const postToContract = (number, code) =>
     if (contract.certified(numberHash))
       return reject(new Error('This number is already verified.'))
 
-    contract.puzzle.sendTransaction(tokenHash, numberHash, {
-      from: owner
-    }, (err, address) => {
+    signAndSendTransaction({
+      from: owner,
+      to: address,
+      data: contract.puzzle.getData(tokenHash, numberHash)
+    }, password, (err, address) => {
       if (err) reject(err)
       else resolve(address)
     })
