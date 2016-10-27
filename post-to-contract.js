@@ -2,10 +2,11 @@
 
 const { address } = require('config')
 const abi = require('./SMSVerification.abi.json')
-const sha3 = require('js-sha3').keccak_256
 
 const Web3 = require('web3')
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
+const sha3 = web3.sha3
+
 const contract = web3.eth.contract(abi).at(address)
 
 const postToContract = (number, code) =>
