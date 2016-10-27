@@ -8,5 +8,7 @@
     "port": 8000,
     "cert": "./self-signed.cert.pem",
     "key": "./self-signed.key.pem"
-  }
+  },
+  "address": "0xEbaB3Eefbca7d3795B51825E7c8A03b287B996B1",
+  "owner": "0x54dfe7b302c563d8587a729b92360aa655b316b0"
 }
