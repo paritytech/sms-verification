@@ -23,7 +23,7 @@ contract Certifier {
 
 contract SimpleCertifier is Owned, Certifier {
     modifier only_delegate { if (msg.sender != delegate) return; _; }
-    
+
     struct Certification {
         bool active;
         mapping (string => bytes32) meta;
@@ -66,7 +66,7 @@ contract ProofOfSMS is SimpleCertifier {
         Puzzled(_numberHash, _puzzleHash);
     }
 
-    function confirm(uint32 _code) {
+    function confirm(bytes32 _code) {
         var numberHash = puzzles[sha3(_code)];
         if (numberHash == 0)
             return;

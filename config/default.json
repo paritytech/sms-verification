@@ -9,7 +9,7 @@
     "cert": "./self-signed.cert.pem",
     "key": "./self-signed.key.pem"
   },
-  "address": "0x7B3F58965439b22ef1dA4BB78f16191d11ab80B0",
+  "address": "0x2677FA9a9579Bd79f32748d57C467e534D9e4925",
   "owner": "0x54dfe7b302c563d8587a729b92360aa655b316b0",
   "passwordFile": "<path to file containing your account password>"
 }

@@ -27,9 +27,8 @@ const signAndSendTransaction = (data, password, cb) =>
     method: 'personal_signAndSendTransaction',
     params: [data, password]
   }, (err, data) => {
-    console.log('data', err, data)
     if (err) cb(err)
-    else cb(null, data.result)
+    else cb(null, data)
   })
 
 const postToContract = (number, code) =>
@@ -48,7 +47,6 @@ const postToContract = (number, code) =>
     .then((hasRequested) => {
       if (!hasRequested) return reject(new Error('Verification of this number not requested.'))
 
-      console.error('number has requested');
       signAndSendTransaction({
         from: owner,
         to: address,
