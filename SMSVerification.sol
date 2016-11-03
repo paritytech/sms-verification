@@ -22,25 +22,31 @@ contract Certifier {
 }
 
 contract SimpleCertifier is Owned, Certifier {
+    modifier only_delegate { if (msg.sender != delegate) return; _; }
+    
     struct Certification {
         bool active;
         mapping (string => bytes32) meta;
     }
 
-    function certify(address _who) only_owner {
+    function certify(address _who) only_delegate {
         certs[_who].active = true;
     }
     function certified(address _who) constant returns (bool) { return certs[_who].active; }
     function get(address _who, string _field) constant returns (bytes32) { return certs[_who].meta[_field]; }
     function getAddress(address _who, string _field) constant returns (address) { return address(certs[_who].meta[_field]); }
     function getUint(address _who, string _field) constant returns (uint) { return uint(certs[_who].meta[_field]); }
+    function setDelegate(address _new) only_owner { delegate = _new; }
 
     mapping (address => Certification) certs;
+    // So that the server posting puzzles doesn't have access to the ETH.
+    address public delegate = msg.sender;
 }
 
 
 
-contract ProofOfSMS is Owned, Certifier {
+contract ProofOfSMS is SimpleCertifier {
+
     struct Entry {
         bool active;
         bytes32 numberHash;
@@ -55,7 +61,7 @@ contract ProofOfSMS is Owned, Certifier {
         Requested(_encryptedNumber);
     }
 
-    function puzzle(bytes32 _puzzleHash, bytes32 _numberHash) only_owner {
+    function puzzle(bytes32 _puzzleHash, bytes32 _numberHash) only_delegate {
         puzzles[_puzzleHash] = _numberHash;
         Puzzled(_numberHash, _puzzleHash);
     }

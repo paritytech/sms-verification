@@ -13,6 +13,19 @@
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_who",
+        "type": "address"
+      }
+    ],
+    "name": "certify",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [
       {
@@ -100,6 +113,19 @@
   },
   {
     "constant": true,
+    "inputs": [],
+    "name": "delegate",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [
       {
         "name": "_who",
@@ -117,6 +143,19 @@
         "type": "uint256"
       }
     ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_new",
+        "type": "address"
+      }
+    ],
+    "name": "setDelegate",
+    "outputs": [],
     "payable": false,
     "type": "function"
   },
