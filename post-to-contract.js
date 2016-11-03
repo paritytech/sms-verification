@@ -10,6 +10,17 @@ const sha3 = web3.sha3
 
 const contract = web3.eth.contract(abi).at(address)
 
+const hasRequested = (numberHash) =>
+  new Promise((resolve, reject) => {
+    contract.Requested({encryptedNumber: numberHash}, {fromBlock: 0, toBlock: 'latest'})
+    .watch((err, data) => {
+      if (err) return reject(err)
+      if (data && data.type === 'mined') {
+        resolve(data.args.encryptedNumber === numberHash)
+      }
+    })
+  })
+
 // TODO use `web3._extend` for this
 const signAndSendTransaction = (data, password, cb) =>
   web3._requestManager.sendAsync({
@@ -29,17 +40,25 @@ const postToContract = (number, code) =>
     // Will be stored inside the (public) contract, paired with `sha3(number)`.
     const tokenHash = sha3(token, {encoding: 'hex'})
 
-    if (contract.certified(numberHash))
+    if (contract.certified(numberHash)) {
       return reject(new Error('This number is already verified.'))
+    }
 
-    signAndSendTransaction({
-      from: owner,
-      to: address,
-      data: contract.puzzle.getData(tokenHash, numberHash)
-    }, password, (err, address) => {
-      if (err) reject(err)
-      else resolve(address)
+    hasRequested(numberHash)
+    .then((hasRequested) => {
+      if (!hasRequested) return reject(new Error('Verification of this number not requested.'))
+
+      console.error('number has requested');
+      signAndSendTransaction({
+        from: owner,
+        to: address,
+        data: contract.puzzle.getData(tokenHash, numberHash)
+      }, password, (err, address) => {
+        if (err) reject(err)
+        else resolve(address)
+      })
     })
+    .catch(reject)
   })
 
 module.exports = postToContract
