@@ -6,6 +6,7 @@ const shortid = require('shortid')
 
 module.exports = (req, res) => {
   const number = req.params.number
+  const anonymized = number.slice(-3)
   const code = shortid.generate()
 
   postToContract(number, code)
@@ -14,7 +15,7 @@ module.exports = (req, res) => {
 
     sendSMS(number, code)
     .then((msg) => {
-      console.info(`Verification code sent to ${number}.`)
+      console.info(`Verification code sent to …${anonymized}.`)
       res.status(202).json({
         status: 'ok',
         message: `Verification code sent to ${number}.`
