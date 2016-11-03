@@ -15,6 +15,7 @@ contract Owned {
 
 contract Certifier {
     event Confirmed(address indexed who);
+    event Revoked(address indexed who);
     function certified(address _who) constant returns (bool);
     function get(address _who, string _field) constant returns (bytes32) {}
     function getAddress(address _who, string _field) constant returns (address) {}
@@ -23,6 +24,7 @@ contract Certifier {
 
 contract SimpleCertifier is Owned, Certifier {
     modifier only_delegate { if (msg.sender != delegate) return; _; }
+    modifier only_certified(address _who) { if (!certs[_who].active) return; _; }
 
     struct Certification {
         bool active;
@@ -31,6 +33,11 @@ contract SimpleCertifier is Owned, Certifier {
 
     function certify(address _who) only_delegate {
         certs[_who].active = true;
+    	Confirmed(_who);
+    }
+    function revoke(address _who) only_delegate only_certified(_who) {
+        certs[_who].active = false;
+    	Revoked(_who);
     }
     function certified(address _who) constant returns (bool) { return certs[_who].active; }
     function get(address _who, string _field) constant returns (bytes32) { return certs[_who].meta[_field]; }
