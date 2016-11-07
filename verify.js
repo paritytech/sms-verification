@@ -35,8 +35,8 @@ module.exports = (req, res) => {
   })
   .then(() => {
     postToContract(number, code)
-    .then((address) => {
-      console.info(`Challenge sent to contract (tx ${address}).`)
+    .then((txHash) => {
+      console.info(`Challenge sent to contract (tx ${txHash}).`)
 
       sendSMS(number, code)
       .then((msg) => {
