@@ -4,10 +4,10 @@ const phone = require('phoneformat.js')
 const sha3 = require('web3/lib/utils/sha3')
 const shortid = require('shortid')
 
-const web3 = require('./web3')
-const storage = require('./storage')
-const postToContract = require('./post-to-contract')
-const sendSMS = require('./send-sms')
+const web3 = require('./lib/web3')
+const storage = require('./lib/storage')
+const postToContract = require('./lib/post-to-contract')
+const sendSMS = require('./lib/send-sms')
 
 module.exports = (req, res) => {
   const number = req.query.number
