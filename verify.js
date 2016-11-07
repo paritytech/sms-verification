@@ -1,15 +1,29 @@
 'use strict'
 
+const phone = require('phoneformat.js')
 const sha3 = require('web3/lib/utils/sha3')
 const shortid = require('shortid')
 
+const web3 = require('./web3')
 const storage = require('./storage')
 const postToContract = require('./post-to-contract')
 const sendSMS = require('./send-sms')
 
 module.exports = (req, res) => {
-  const number = req.params.number
+  const number = req.query.number
+  if (!phone.isValidNumber(number)) return res.status(400).json({
+    status: 'error',
+    message: 'Phone number is not in E.164 format.'
+  })
+
+  const address = req.query.address
+  if (!web3.isAddress(address)) return res.status(400).json({
+    status: 'error',
+    message: 'Address is invalid.'
+  })
+
   const anonymized = sha3(number)
+  const code = shortid.generate()
 
   storage.has(anonymized)
   .then((isVerified) => {
@@ -17,7 +31,6 @@ module.exports = (req, res) => {
       status: 'error',
       message: 'This number has already been verified.'
     })
-    const code = shortid.generate()
     return storage.put(anonymized, code)
   })
   .then(() => {

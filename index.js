@@ -22,7 +22,7 @@ api.use(corser.create({requestHeaders: allowed}))
 
 api.use(bodyParser.json())
 
-api.post('/:number', noCache, verify)
+api.post('/', noCache, verify)
 
 const server = spdy.createServer({
   cert: fs.readFileSync(config.http.cert),
