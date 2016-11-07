@@ -33,11 +33,11 @@ contract SimpleCertifier is Owned, Certifier {
 
     function certify(address _who) only_delegate {
         certs[_who].active = true;
-    	Confirmed(_who);
+        Confirmed(_who);
     }
     function revoke(address _who) only_delegate only_certified(_who) {
         certs[_who].active = false;
-    	Revoked(_who);
+        Revoked(_who);
     }
     function certified(address _who) constant returns (bool) { return certs[_who].active; }
     function get(address _who, string _field) constant returns (bytes32) { return certs[_who].meta[_field]; }
@@ -54,34 +54,25 @@ contract SimpleCertifier is Owned, Certifier {
 
 contract ProofOfSMS is SimpleCertifier {
 
-    struct Entry {
-        bool active;
-        bytes32 numberHash;
-    }
-
     modifier when_fee_paid { if (msg.value < fee) return; _; }
 
-    event Requested(bytes32 encryptedNumber);
-    event Puzzled(bytes32 indexed numberHash, bytes32 puzzleHash);
+    event Requested(address indexed who);
+    event Puzzled(address indexed who, bytes32 puzzle);
 
-    function request(bytes32 _encryptedNumber) payable when_fee_paid {
-        Requested(_encryptedNumber);
+    function request() payable when_fee_paid {
+        Requested(msg.sender);
     }
 
-    function puzzle(bytes32 _puzzleHash, bytes32 _numberHash) only_delegate {
-        puzzles[_puzzleHash] = _numberHash;
-        Puzzled(_numberHash, _puzzleHash);
+    function puzzle(address _who, bytes32 _puzzle) only_delegate {
+        puzzles[_who] = _puzzle;
+        Puzzled(_who, _puzzle);
     }
 
     function confirm(bytes32 _code) {
-        var numberHash = puzzles[sha3(_code)];
-        if (numberHash == 0)
+        if (puzzles[msg.sender] != sha3(_code))
             return;
-        delete puzzles[sha3(_code)];
-        if (reverse[numberHash] != 0)
-            return;
-        entries[msg.sender] = Entry(true, numberHash);
-        reverse[numberHash] = msg.sender;
+        delete puzzles[msg.sender];
+        entries[msg.sender] = true;
         Confirmed(msg.sender);
     }
 
@@ -95,16 +86,11 @@ contract ProofOfSMS is SimpleCertifier {
     }
 
     function certified(address _who) constant returns (bool) {
-        return entries[_who].active;
+        return entries[_who];
     }
 
-    function get(address _who, string _field) constant returns (bytes32) {
-        return entries[_who].numberHash;
-    }
+    mapping (address => bytes32) puzzles;
+    mapping (address => bool) entries;
 
-    mapping (address => Entry) entries;
-    mapping (bytes32 => address) reverse;
-    mapping (bytes32 => bytes32) puzzles;
-
-    uint fee = 12 finney;
+    uint public fee = 12 finney;
 }

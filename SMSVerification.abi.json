@@ -26,6 +26,31 @@
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [],
+    "name": "request",
+    "outputs": [],
+    "payable": true,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_who",
+        "type": "address"
+      },
+      {
+        "name": "_puzzle",
+        "type": "bytes32"
+      }
+    ],
+    "name": "puzzle",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [
       {
@@ -51,28 +76,11 @@
     "constant": false,
     "inputs": [
       {
-        "name": "_encryptedNumber",
-        "type": "bytes32"
+        "name": "_new",
+        "type": "uint256"
       }
     ],
-    "name": "request",
-    "outputs": [],
-    "payable": true,
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_puzzleHash",
-        "type": "bytes32"
-      },
-      {
-        "name": "_numberHash",
-        "type": "bytes32"
-      }
-    ],
-    "name": "puzzle",
+    "name": "setFee",
     "outputs": [],
     "payable": false,
     "type": "function"
@@ -81,11 +89,24 @@
     "constant": false,
     "inputs": [
       {
-        "name": "_new",
-        "type": "uint256"
+        "name": "_who",
+        "type": "address"
       }
     ],
-    "name": "setFee",
+    "name": "revoke",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_code",
+        "type": "bytes32"
+      }
+    ],
+    "name": "confirm",
     "outputs": [],
     "payable": false,
     "type": "function"
@@ -178,15 +199,15 @@
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [
+    "constant": true,
+    "inputs": [],
+    "name": "fee",
+    "outputs": [
       {
-        "name": "_code",
-        "type": "uint32"
+        "name": "",
+        "type": "uint256"
       }
     ],
-    "name": "confirm",
-    "outputs": [],
     "payable": false,
     "type": "function"
   },
@@ -216,9 +237,9 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "name": "encryptedNumber",
-        "type": "bytes32"
+        "indexed": true,
+        "name": "who",
+        "type": "address"
       }
     ],
     "name": "Requested",
@@ -229,12 +250,12 @@
     "inputs": [
       {
         "indexed": true,
-        "name": "numberHash",
-        "type": "bytes32"
+        "name": "who",
+        "type": "address"
       },
       {
         "indexed": false,
-        "name": "puzzleHash",
+        "name": "puzzle",
         "type": "bytes32"
       }
     ],
@@ -251,6 +272,18 @@
       }
     ],
     "name": "Confirmed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "who",
+        "type": "address"
+      }
+    ],
+    "name": "Revoked",
     "type": "event"
   },
   {
