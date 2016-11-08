@@ -60,6 +60,8 @@ contract ProofOfSMS is SimpleCertifier {
     event Puzzled(address indexed who, bytes32 puzzle);
 
     function request() payable when_fee_paid {
+        if (certs[msg.sender].active)
+            return;
         Requested(msg.sender);
     }
 
@@ -72,7 +74,7 @@ contract ProofOfSMS is SimpleCertifier {
         if (puzzles[msg.sender] != sha3(_code))
             return;
         delete puzzles[msg.sender];
-        entries[msg.sender] = true;
+        certs[msg.sender].active = true;
         Confirmed(msg.sender);
     }
 
@@ -86,11 +88,10 @@ contract ProofOfSMS is SimpleCertifier {
     }
 
     function certified(address _who) constant returns (bool) {
-        return entries[_who];
+        return certs[_who].active;
     }
 
     mapping (address => bytes32) puzzles;
-    mapping (address => bool) entries;
 
-    uint public fee = 12 finney;
+    uint public fee = 15 finney;
 }
