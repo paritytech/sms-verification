@@ -11,26 +11,32 @@ const sendSMS = require('./lib/send-sms')
 
 module.exports = (req, res) => {
   const number = req.query.number
-  if (!phone.isValidNumber(number)) return res.status(400).json({
-    status: 'error',
-    message: 'Phone number is not in E.164 format.'
-  })
+  if (!phone.isValidNumber(number)) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Phone number is not in E.164 format.'
+    })
+  }
 
   const address = req.query.address
-  if (!web3.isAddress(address)) return res.status(400).json({
-    status: 'error',
-    message: 'Address is invalid.'
-  })
+  if (!web3.isAddress(address)) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Address is invalid.'
+    })
+  }
 
   const anonymized = sha3(number)
   const code = shortid.generate()
 
   storage.has(anonymized)
   .then((isVerified) => {
-    if (isVerified) return res.status(400).json({
-      status: 'error',
-      message: 'This number has already been verified.'
-    })
+    if (isVerified) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'This number has already been verified.'
+      })
+    }
     return storage.put(anonymized, code)
   })
   .then(() => {

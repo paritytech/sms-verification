@@ -10,30 +10,30 @@
 The following process **verifies a number**:
 
 ```
-confirm(sha(number),token)
+           confirm(token)
          +-------------------> +--------+
-         |                     |contract|   puzzle(sha(token),sha(number))
+         |                     |contract|   puzzle(address, sha(token))
          |       +-----------> +--------+ <-----------+
          |       |                                    |
-         |       | request(sha(number))               |
+         |       | request()                          |
          |       |                                    |
          |       |                                    |
-         |   +------+          POST /:number      +------+
+         |   +------+  POST /?number=…&address=…  +------+
          +-- |client| +-------------------------> |server| code=rand()
              +------+                             +------+ token=sha(code)
 token=sha(code)  ^             SMS with code          |
                  +------------------------------------+
 ```
 
-1. client requests verification (`request(sha(number))`)
-2. client calls verification server (`POST /:number`)
+1. client requests verification (`request()`)
+2. client calls verification server (`POST /?number=…&address=…`)
 3. server generates `code` and computes `token`
-4. server posts challenge (`puzzle(sha(token), sha(number))`)
+4. server posts challenge (`puzzle(address, sha(token))`)
 5. server sends SMS to client (with `code`)
 6. client computes `token`
 7. client posts response (`confirm(token)`)
 
-Now, anyone can easily **check if a number is verified by calling `certified(sha3(number))`** on the contract.
+Now, anyone can easily **check if a number is verified by calling `certified(address)`** on the contract.
 
 ## Installation
 
@@ -45,7 +45,7 @@ npm install --production
 
 ## Usage
 
-Up to now, **the account calling `puzzle` has to be the owner of the contract.**
+Up to now, **the account calling `puzzle` has to be the `delegate` of the contract.**
 
 1. Set up an account and put its password in a file.
 2. Run parity with `--jsonrpc-apis eth,personal --unlock <account-address> --password <account-password-file>`.
