@@ -5,7 +5,8 @@
   "description": "SMS verification for Parity.",
   "main": "index.js",
   "scripts": {
-    "lint": "standard"
+    "lint": "standard",
+    "compile": "solcjs --abi --bin --optimize SMSVerification.sol -o contracts"
   },
   "keywords": [],
   "author": "Ethcore Team <admin@ethcore.io>",
@@ -28,6 +29,7 @@
     "nocache": "^1.0.1",
     "phoneformat.js": "^1.0.3",
     "shortid": "^2.2.6",
+    "solc": "^0.4.4",
     "spdy": "^3.4.4",
     "then-levelup": "^1.0.1",
     "twilio": "^2.11.0",
