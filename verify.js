@@ -42,7 +42,7 @@ module.exports = (req, res) => {
   .then(() => {
     console.info(`Hash of phone number (${anonymized}) put into DB.`)
 
-    postToContract(number, code)
+    postToContract(who, code)
     .then((txHash) => {
       console.info(`Challenge sent to contract (tx ${txHash}).`)
 
