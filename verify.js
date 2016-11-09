@@ -40,6 +40,8 @@ module.exports = (req, res) => {
     return storage.put(anonymized, code)
   })
   .then(() => {
+    console.info(`Hash of phone number (${anonymized}) put into DB.`)
+
     postToContract(number, code)
     .then((txHash) => {
       console.info(`Challenge sent to contract (tx ${txHash}).`)

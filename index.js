@@ -4,6 +4,7 @@ const express = require('express')
 const hsts = require('hsts')
 const corser = require('corser')
 const noCache = require('nocache')()
+const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const config = require('config')
 const spdy = require('spdy')
@@ -21,6 +22,10 @@ const allowed = corser.simpleRequestHeaders.concat(['User-Agent'])
 api.use(corser.create({requestHeaders: allowed}))
 
 api.use(bodyParser.json())
+
+morgan.token('number', (req) => req.query.number)
+morgan.token('address', (req) => req.query.address)
+api.use(morgan(':date[iso] :number :address :status :response-time ms'))
 
 api.post('/', noCache, verify)
 
