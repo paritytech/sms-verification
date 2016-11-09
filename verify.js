@@ -18,7 +18,7 @@ module.exports = (req, res) => {
     })
   }
 
-  const address = req.query.address
+  const address = req.query.address.toLowerCase()
   if (!web3.isAddress(address)) {
     return res.status(400).json({
       status: 'error',
@@ -42,7 +42,7 @@ module.exports = (req, res) => {
   .then(() => {
     console.info(`Hash of phone number (${anonymized}) put into DB.`)
 
-    postToContract(who, code)
+    postToContract(address, code)
     .then((txHash) => {
       console.info(`Challenge sent to contract (tx ${txHash}).`)
 
