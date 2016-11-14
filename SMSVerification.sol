@@ -93,5 +93,5 @@ contract ProofOfSMS is SimpleCertifier {
 
     mapping (address => bytes32) puzzles;
 
-    uint public fee = 15 finney;
+    uint public fee = 30 finney;
 }
