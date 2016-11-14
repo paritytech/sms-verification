@@ -29,7 +29,6 @@
     "morgan": "^1.7.0",
     "nocache": "^1.0.1",
     "phoneformat.js": "^1.0.3",
-    "shortid": "^2.2.6",
     "solc": "^0.4.4",
     "spdy": "^3.4.4",
     "then-levelup": "^1.0.1",

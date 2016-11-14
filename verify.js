@@ -2,10 +2,10 @@
 
 const phone = require('phoneformat.js')
 const sha3 = require('web3/lib/utils/sha3')
-const shortid = require('shortid')
 
 const web3 = require('./lib/web3')
 const storage = require('./lib/storage')
+const generateCode = require('./lib/generate-code')
 const postToContract = require('./lib/post-to-contract')
 const sendSMS = require('./lib/send-sms')
 
