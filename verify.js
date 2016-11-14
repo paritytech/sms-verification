@@ -27,46 +27,54 @@ module.exports = (req, res) => {
   }
 
   const anonymized = sha3(number)
-  const code = shortid.generate()
+  generateCode()
+  .then((code) => {
+    storage.has(anonymized)
+    .then((isVerified) => {
+      if (isVerified) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'This number has already been verified.'
+        })
+      }
+      return storage.put(anonymized, code)
+    })
+    .then(() => {
+      console.info(`Hash of phone number (${anonymized}) put into DB.`)
 
-  storage.has(anonymized)
-  .then((isVerified) => {
-    if (isVerified) {
-      return res.status(400).json({
-        status: 'error',
-        message: 'This number has already been verified.'
-      })
-    }
-    return storage.put(anonymized, code)
-  })
-  .then(() => {
-    console.info(`Hash of phone number (${anonymized}) put into DB.`)
+      postToContract(address, code)
+      .then((txHash) => {
+        console.info(`Challenge sent to contract (tx ${txHash}).`)
 
-    postToContract(address, code)
-    .then((txHash) => {
-      console.info(`Challenge sent to contract (tx ${txHash}).`)
-
-      sendSMS(number, code)
-      .then((msg) => {
-        console.info(`Verification code sent to …${anonymized}.`)
-        res.status(202).json({
-          status: 'ok',
-          message: `Verification code sent to ${number}.`
+        sendSMS(number, code)
+        .then((msg) => {
+          console.info(`Verification code sent to …${anonymized}.`)
+          res.status(202).json({
+            status: 'ok',
+            message: `Verification code sent to ${number}.`
+          })
+        })
+        .catch((err) => {
+          console.error(err.message)
+          res.status(500).json({
+            status: 'error',
+            message: 'An error occured while sending the SMS.'
+          })
         })
       })
       .catch((err) => {
         console.error(err.message)
         res.status(500).json({
           status: 'error',
-          message: 'An error occured while sending the SMS.'
+          message: 'An error occured while sending to the contract.'
         })
       })
     })
     .catch((err) => {
       console.error(err.message)
-      res.status(500).json({
+      return res.status(500).json({
         status: 'error',
-        message: 'An error occured while sending to the contract.'
+        message: 'An error occured while querying the database.'
       })
     })
   })
@@ -74,7 +82,7 @@ module.exports = (req, res) => {
     console.error(err.message)
     return res.status(500).json({
       status: 'error',
-      message: 'An error occured while querying the database.'
+      message: 'An error occured while generating a code.'
     })
   })
 }
