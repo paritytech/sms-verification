@@ -1,5 +1,7 @@
 'use strict'
 
+const co = require('co-express')
+const boom = require('boom')
 const phone = require('phoneformat.js')
 const sha3 = require('web3/lib/utils/sha3')
 
@@ -9,80 +11,52 @@ const generateCode = require('./lib/generate-code')
 const postToContract = require('./lib/post-to-contract')
 const sendSMS = require('./lib/send-sms')
 
-module.exports = (req, res) => {
+module.exports = co(function* (req, res) {
   const number = req.query.number
   if (!phone.isValidNumber(number)) {
-    return res.status(400).json({
-      status: 'error',
-      message: 'Phone number is not in E.164 format.'
-    })
+    throw boom.badRequest('Phone number is not in E.164 format.')
   }
 
   const address = req.query.address.toLowerCase()
-  if (!web3.isAddress(address)) {
-    return res.status(400).json({
-      status: 'error',
-      message: 'Address is invalid.'
-    })
+  if (!web3.isAddress(address)) throw boom.badRequest('Address is invalid.')
+
+  let code
+  try {
+    code = yield generateCode()
+  } catch (err) {
+    console.error(err.message)
+    throw boom.internal('An error occured while generating a code.')
   }
 
   const anonymized = sha3(number)
-  generateCode()
-  .then((code) => {
-    storage.has(anonymized)
-    .then((isVerified) => {
-      if (isVerified) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'This number has already been verified.'
-        })
-      }
-      return storage.put(anonymized, code)
-    })
-    .then(() => {
-      console.info(`Hash of phone number (${anonymized}) put into DB.`)
-
-      postToContract(address, code)
-      .then((txHash) => {
-        console.info(`Challenge sent to contract (tx ${txHash}).`)
-
-        sendSMS(number, code)
-        .then((msg) => {
-          console.info(`Verification code sent to …${anonymized}.`)
-          res.status(202).json({
-            status: 'ok',
-            message: `Verification code sent to ${number}.`
-          })
-        })
-        .catch((err) => {
-          console.error(err.message)
-          res.status(500).json({
-            status: 'error',
-            message: 'An error occured while sending the SMS.'
-          })
-        })
-      })
-      .catch((err) => {
-        console.error(err.message)
-        res.status(500).json({
-          status: 'error',
-          message: 'An error occured while sending to the contract.'
-        })
-      })
-    })
-    .catch((err) => {
-      console.error(err.message)
-      return res.status(500).json({
-        status: 'error',
-        message: 'An error occured while querying the database.'
-      })
-    })
-  })
-  .catch((err) => {
+  try {
+    if (yield storage.has(anonymized)) {
+      throw boom.badRequest('This number has already been verified.')
+    }
+    yield storage.put(anonymized, code)
+    console.info(`Hash of phone number (${anonymized}) put into DB.`)
+  } catch (err) {
     console.error(err.message)
-    return res.status(500).json({
-      status: 'error',
-      message: 'An error occured while generating a code.'
+    throw boom.internal('An error occured while querying the database.')
+  }
+
+  try {
+    const txHash = yield postToContract(address, code)
+    console.info(`Challenge sent to contract (tx ${txHash}).`)
+  } catch (err) {
+    console.error(err.message)
+    throw boom.internal('An error occured while sending to the contract.')
+  }
+
+  try {
+    yield sendSMS(number, code)
+    console.info(`Verification code sent to ${anonymized}.`)
+    return res.status(202).json({
+      status: 'ok',
+      message: `Verification code sent to ${number}.`
     })
-  })
-}
+  } catch (err) {
+    console.error(err.message)
+    throw boom.internal('An error occured while sending the SMS.')
+  }
+})

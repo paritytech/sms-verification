@@ -29,6 +29,13 @@ api.use(morgan(':date[iso] :number :address :status :response-time ms'))
 
 api.post('/', noCache, verify)
 
+api.use((err, req, res, next) => {
+  if (res.headersSent) return next()
+  return res
+  .status(err.isBoom ? err.output.statusCode : 500)
+  .json({status: 'error', message: err.message})
+})
+
 const server = spdy.createServer({
   cert: fs.readFileSync(config.http.cert),
   key: fs.readFileSync(config.http.key)
