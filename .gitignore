@@ -6,6 +6,7 @@ npm-debug.log
 
 contracts
 
-config/production.json
+config/*
+!config/default.json
 
 dev.leveldb
