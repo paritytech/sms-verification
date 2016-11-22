@@ -70,12 +70,13 @@ contract ProofOfSMS is SimpleCertifier {
         Puzzled(_who, _puzzle);
     }
 
-    function confirm(bytes32 _code) {
+    function confirm(bytes32 _code) returns (bool) {
         if (puzzles[msg.sender] != sha3(_code))
             return;
         delete puzzles[msg.sender];
         certs[msg.sender].active = true;
         Confirmed(msg.sender);
+        return true;
     }
 
     function setFee(uint _new) only_owner {
