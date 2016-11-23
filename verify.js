@@ -24,7 +24,6 @@ module.exports = co(function* (req, res) {
   try {
     code = yield generateCode()
   } catch (err) {
-    console.error(err.message)
     throw boom.internal('An error occured while generating a code.')
   }
 
@@ -36,7 +35,7 @@ module.exports = co(function* (req, res) {
     yield storage.put(anonymized, code)
     console.info(`Hash of phone number (${anonymized}) put into DB.`)
   } catch (err) {
-    console.error(err.message)
+    if (err.isBoom) throw err
     throw boom.internal('An error occured while querying the database.')
   }
 
@@ -44,7 +43,6 @@ module.exports = co(function* (req, res) {
     const txHash = yield postToContract(address, code)
     console.info(`Challenge sent to contract (tx ${txHash}).`)
   } catch (err) {
-    console.error(err.message)
     throw boom.internal('An error occured while sending to the contract.')
   }
 
@@ -56,7 +54,6 @@ module.exports = co(function* (req, res) {
       message: `Verification code sent to ${number}.`
     })
   } catch (err) {
-    console.error(err.message)
     throw boom.internal('An error occured while sending the SMS.')
   }
 })
