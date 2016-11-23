@@ -31,7 +31,6 @@
     "levelup": "^1.3.3",
     "morgan": "^1.7.0",
     "nocache": "^2.0.0",
-    "phoneformat.js": "^1.0.3",
     "solc": "^0.4.4",
     "spdy": "^3.4.4",
     "standard": "^8.5.0",

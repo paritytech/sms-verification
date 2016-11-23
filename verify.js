@@ -2,19 +2,21 @@
 
 const co = require('co-express')
 const boom = require('boom')
-const phone = require('phoneformat.js')
 const sha3 = require('web3/lib/utils/sha3')
 
 const web3 = require('./lib/web3')
+const normalizeNumber = require('./lib/normalize-number')
 const storage = require('./lib/storage')
 const generateCode = require('./lib/generate-code')
 const postToContract = require('./lib/post-to-contract')
 const sendSMS = require('./lib/send-sms')
 
 module.exports = co(function* (req, res) {
-  const number = req.query.number
-  if (!phone.isValidNumber(number)) {
-    throw boom.badRequest('Phone number is not in E.164 format.')
+  let number = req.query.number
+  try {
+    number = yield normalizeNumber(number)
+  } catch (err) {
+    throw boom.badRequest('Phone number is invalid.')
   }
 
   const address = req.query.address.toLowerCase()
