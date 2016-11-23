@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "standard",
+    "prepush": "npm run lint && npm run compile",
     "compile": "solcjs --abi --bin --optimize SMSVerification.sol -o contracts"
   },
   "keywords": [],
@@ -42,6 +43,7 @@
     "pm2": "^2.0.18"
   },
   "devDependencies": {
-    "standard": "^8.4.0"
+    "standard": "^8.4.0",
+    "husky": "^0.11.9"
   }
 }
