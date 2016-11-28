@@ -5,6 +5,7 @@ const hsts = require('hsts')
 const corser = require('corser')
 const noCache = require('nocache')()
 const morgan = require('morgan')
+const sha3 = require('web3/lib/utils/sha3')
 const bodyParser = require('body-parser')
 const config = require('config')
 const spdy = require('spdy')
@@ -23,7 +24,7 @@ api.use(corser.create({requestHeaders: allowed}))
 
 api.use(bodyParser.json())
 
-morgan.token('number', (req) => req.query.number)
+morgan.token('number', (req) => sha3(req.query.number))
 morgan.token('address', (req) => req.query.address)
 api.use(morgan(':date[iso] :number :address :status :response-time ms'))
 
