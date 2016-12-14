@@ -4,6 +4,7 @@ thumbs.db
 node_modules
 npm-debug.log
 
+SMSVerification.sol
 contracts
 
 config/*

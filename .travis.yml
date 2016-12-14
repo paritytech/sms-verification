@@ -8,5 +8,6 @@ cache:
   directories:
     - node_modules
 script:
+  - npm run get-contract
   - npm run lint
   - npm run compile
