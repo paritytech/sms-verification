@@ -5,7 +5,7 @@
   "description": "SMS verification for Parity.",
   "main": "index.js",
   "scripts": {
-    "get-contract": "curl -s -L 'https://raw.githubusercontent.com/ethcore/contracts/master/SMSVerification.sol' > SMSVerification.sol",
+    "get-contract": "curl --fail -L 'https://raw.githubusercontent.com/ethcore/contracts/master/SMSVerification.sol' > SMSVerification.sol",
     "lint": "standard",
     "prepush": "npm run get-contract && npm run lint && npm run compile",
     "compile": "solcjs --abi --bin --optimize SMSVerification.sol -o contracts"
