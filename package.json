@@ -27,6 +27,7 @@
     "config": "^1.24.0",
     "corser": "^2.0.1",
     "express": "^4.14.0",
+    "fetch-ponyfill": "^3.0.2",
     "hsts": "^2.0.0",
     "leveldown": "^1.5.0",
     "levelup": "^1.3.3",

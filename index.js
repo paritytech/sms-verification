@@ -11,6 +11,7 @@ const config = require('config')
 const spdy = require('spdy')
 const fs = require('fs')
 
+const nodeIsSynced = require('./lib/node-is-synced')
 const verify = require('./verify')
 
 const api = express()
@@ -27,6 +28,15 @@ api.use(bodyParser.json())
 morgan.token('number', (req) => sha3(req.query.number))
 morgan.token('address', (req) => req.query.address)
 api.use(morgan(':date[iso] :number :address :status :response-time ms'))
+
+api.get('/health', noCache, (req, res, next) => {
+  nodeIsSynced()
+  .catch(() => false)
+  .then((isSynced) => {
+    console.log('isSynced', isSynced)
+    res.status(isSynced ? 200 : 500).end()
+  })
+})
 
 api.post('/', noCache, verify)
 
