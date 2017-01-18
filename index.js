@@ -12,6 +12,7 @@ const spdy = require('spdy')
 const fs = require('fs')
 
 const nodeIsSynced = require('./lib/node-is-synced')
+const check = require('./check')
 const verify = require('./verify')
 
 const api = express()
@@ -37,6 +38,8 @@ api.get('/health', noCache, (req, res, next) => {
     res.status(isSynced ? 200 : 500).end()
   })
 })
+
+api.get('/', noCache, check)
 
 api.post('/', noCache, verify)
 
