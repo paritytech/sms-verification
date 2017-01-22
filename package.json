@@ -41,7 +41,7 @@
     "web3": "^0.18.0"
   },
   "peerDependencies": {
-    "pm2": "^2.0.18"
+    "pm2": "^2.3.0"
   },
   "devDependencies": {
     "standard": "^8.4.0",
