@@ -23,6 +23,7 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "boom": "^4.2.0",
+    "co": "^4.6.0",
     "co-express": "^1.2.2",
     "config": "^1.24.0",
     "corser": "^2.0.1",
