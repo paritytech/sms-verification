@@ -48,9 +48,11 @@ npm install --production
 **The account calling `puzzle` has to be the `delegate` of the contract.**
 
 1. Set up an account and put its password in a file.
-2. Run Parity with `--jsonrpc-apis eth,personal,parity`, `--unlock <account-address> --password <account-password-file>`.
+2. Run Parity with `--jsonrpc-apis net,eth,personal,parity`.
 3. Create a config file `config/<env>.json`, which partially overrides `config/default.json`.
-4. `export NODE_ENV=<env>; node index.js`
+4. `env NODE_ENV=<env> node index.js`
+
+Deploy to production using process managers like [forever](https://github.com/foreverjs/forever#readme).
 
 ---
 
@@ -59,10 +61,3 @@ To run on both testnet and mainnet, just create two config files. Make sure to u
 - separate Parity processes listening on different ports (`parity.host`)
 - separate `db` files
 - separate ports to listen on (`http.port`)
-
-I usually run a testnet & a mainnet Parity in parallel like this:
-
-```shell
-screen -S parity-testnet -t parity-testnet -- ./parity/target/release/parity --chain testnet --port 40303 --jsonrpc-apis eth,personal,parity --no-ui --no-dapps --jsonrpc-port 18545 --unlock … --password …
-screen -S parity-mainnet -t parity-mainnet -- ./parity/target/release/parity --chain mainnet --port 30303 --jsonrpc-apis eth,personal,parity --no-ui --no-dapps --jsonrpc-port 8545 --unlock … --password …
-```
