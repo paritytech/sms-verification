@@ -15,7 +15,7 @@ module.exports = co(function* (req, res) {
   } catch (err) {
     throw boom.badRequest('Phone number is invalid.')
   }
-  const anonymized = sha3(number)
+  const anonymized = '0x' + sha3(number)
 
   const address = req.query.address && req.query.address.toLowerCase()
   if (!web3.isAddress(address)) throw boom.badRequest('Address is invalid.')

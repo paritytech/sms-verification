@@ -29,13 +29,11 @@ module.exports = co(function* (req, res) {
     throw boom.internal('An error occured while generating a code.')
   }
 
-  const anonymized = sha3(number)
+  const anonymized = '0x' + sha3(number)
   try {
     if (yield storage.has(anonymized)) {
       throw boom.badRequest('This number has already been verified.')
     }
-    yield storage.put(anonymized, code)
-    console.info(`Hash of phone number (${anonymized}) put into DB.`)
   } catch (err) {
     if (err.isBoom) throw err
     throw boom.internal('An error occured while querying the database.')
@@ -46,6 +44,13 @@ module.exports = co(function* (req, res) {
     console.info(`Challenge sent to contract (tx ${txHash}).`)
   } catch (err) {
     throw boom.internal('An error occured while sending to the contract.')
+  }
+
+  try {
+    yield storage.put(anonymized, code)
+    console.info(`Hash of phone number (${anonymized}) put into DB.`)
+  } catch (err) {
+    throw boom.internal('An error occured while querying the database.')
   }
 
   try {
