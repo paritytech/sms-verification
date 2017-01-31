@@ -43,7 +43,14 @@ module.exports = co(function* (req, res) {
     const txHash = yield postToContract(address, code)
     console.info(`Challenge sent to contract (tx ${txHash}).`)
   } catch (err) {
-    throw boom.internal('An error occured while sending to the contract.')
+    throw boom.internal('An error occured while querying Parity.')
+  }
+
+  try {
+    yield sendSMS(number, code)
+    console.info(`Verification code sent to ${anonymized}.`)
+  } catch (err) {
+    throw boom.internal('An error occured while sending the SMS.')
   }
 
   try {
@@ -53,14 +60,8 @@ module.exports = co(function* (req, res) {
     throw boom.internal('An error occured while querying the database.')
   }
 
-  try {
-    yield sendSMS(number, code)
-    console.info(`Verification code sent to ${anonymized}.`)
-    return res.status(202).json({
-      status: 'ok',
-      message: `Verification code sent to ${number}.`
-    })
-  } catch (err) {
-    throw boom.internal('An error occured while sending the SMS.')
-  }
+  return res.status(202).json({
+    status: 'ok',
+    message: `Verification code sent to ${number}.`
+  })
 })

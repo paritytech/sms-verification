@@ -6,6 +6,7 @@ const sha3 = require('web3/lib/utils/sha3')
 
 const web3 = require('./lib/web3')
 const normalizeNumber = require('./lib/normalize-number')
+const hasRequested = require('./lib/has-requested')
 const storage = require('./lib/storage')
 
 module.exports = co(function* (req, res) {
@@ -21,12 +22,20 @@ module.exports = co(function* (req, res) {
   if (!web3.isAddress(address)) throw boom.badRequest('Address is invalid.')
 
   try {
-    // todo: check if the specified address is correct, to prevent mass retrieval of this information
+    if (!(yield hasRequested(address))) {
+      throw boom.badRequest('There is no request by this address.')
+    }
+  } catch (err) {
+    if (err.isBoom) throw err
+    throw boom.wrap(err, 500, 'An error occured while querying Parity')
+  }
+
+  try {
     const hasRequested = yield storage.has(anonymized)
-    if (!hasRequested) throw boom.notFound('There has not been requested any code for this phone number.')
+    if (!hasRequested) throw boom.notFound('There has not been sent any code to this phone number.')
     return res.status(200).json({
       status: 'ok',
-      message: 'A code has been requested for this phone number.'
+      message: 'A code has been sent to this phone number.'
     })
   } catch (err) {
     if (err.isBoom) throw err
