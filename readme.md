@@ -35,6 +35,8 @@ token=sha(code)  ^             SMS with code          |
 
 Now, anyone can easily **check if a number is verified by calling `certified(address)`** on the contract.
 
+[latest deployed `SMSVerification.sol`](https://github.com/ethcore/contracts/blob/58842b9/SMSVerification.sol)
+
 ## Installation
 
 ```shell

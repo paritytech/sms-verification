@@ -1,0 +1,12 @@
+{
+  "name"              : "sms-verification-testnet",
+  "exec_interpreter"  : "node",
+  "script"            : "index.js",
+  "log_date_format"   : "YYYY-MM-DD HH:mm Z",
+  "merge_logs"        : false,
+  "watch"             : false,
+  "max_restarts"      : 10,
+  "env": {
+    "NODE_ENV"        : "testnet"
+  }
+}
