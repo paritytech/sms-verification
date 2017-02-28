@@ -43,7 +43,7 @@
     "pm2": "^2.0.18"
   },
   "devDependencies": {
-    "standard": "^8.4.0",
+    "standard": "^9.0.0",
     "husky": "^0.12.0"
   }
 }
