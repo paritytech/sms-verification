@@ -34,7 +34,7 @@
     "morgan": "^1.7.0",
     "nocache": "^2.0.0",
     "solc": "^0.4.4",
-    "standard": "^8.5.0",
+    "standard": "^10.0.0-beta.0",
     "then-levelup": "^1.0.1",
     "twilio": "^2.11.1",
     "web3": "^0.18.0"
