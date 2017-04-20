@@ -39,6 +39,7 @@ module.exports = co(function* (req, res) {
     })
   } catch (err) {
     if (err.isBoom) throw err
+    console.error('Error querying the database: ', err)
     throw boom.internal('An error occured while querying the database.')
   }
 })
