@@ -34,7 +34,10 @@ api.get('/health', noCache, (req, res, next) => {
   ])
   .catch(() => [false, 0])
   .then(([isSynced, nrOfPeers]) => {
-    res.status(isSynced && nrOfPeers > 0 ? 200 : 500).end()
+    res.status(isSynced && nrOfPeers > 0 ? 200 : 500).json({
+      isSynced,
+      nrOfPeers
+    })
   })
 })
 
