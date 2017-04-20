@@ -12,7 +12,7 @@ const postToContract = require('./lib/post-to-contract')
 const sendSMS = require('./lib/send-sms')
 
 function internal (msg, err = null) {
-  console.error(msg, err);
+  console.info(msg, err)
   return boom.badRequest(msg)
 }
 
