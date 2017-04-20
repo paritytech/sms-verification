@@ -13,7 +13,7 @@ const sendSMS = require('./lib/send-sms')
 
 function internal (msg, err = null) {
   console.info(msg, err)
-  return boom.badRequest(msg)
+  return boom.internal(msg)
 }
 
 module.exports = co(function* (req, res) {
