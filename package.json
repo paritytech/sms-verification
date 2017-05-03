@@ -36,7 +36,7 @@
     "solc": "^0.4.4",
     "standard": "^8.5.0",
     "then-levelup": "^1.0.1",
-    "twilio": "^2.11.1",
+    "twilio": "^3.0.0",
     "web3": "^0.18.0"
   },
   "peerDependencies": {
