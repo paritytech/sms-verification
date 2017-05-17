@@ -1,6 +1,7 @@
 'use strict'
 
 const express = require('express')
+const hsts = require('hsts')
 const corser = require('corser')
 const noCache = require('nocache')()
 const morgan = require('morgan')
@@ -8,6 +9,8 @@ const sha3 = require('web3/lib/utils/sha3')
 const bodyParser = require('body-parser')
 const config = require('config')
 const http = require('http')
+const spdy = require('spdy')
+const fs = require('fs')
 
 const nodeIsSynced = require('./lib/node-is-synced')
 const nrOfPeers = require('./lib/nr-of-peers')
@@ -16,6 +19,10 @@ const verify = require('./verify')
 
 const api = express()
 module.exports = api
+
+if (config.http.cert) {
+  api.use(hsts({ maxAge: 3 * 24 * 60 * 60 * 1000 })) // 3 days
+}
 
 // CORS
 const allowed = corser.simpleRequestHeaders.concat(['User-Agent'])
@@ -52,8 +59,18 @@ api.use((err, req, res, next) => {
   .json({status: 'error', message: err.message})
 })
 
-const server = http.createServer(api)
-server.listen(config.http.port, (err) => {
+const server = () => {
+  if (config.http.cert) {
+    return spdy.createServer({
+      cert: fs.readFileSync(config.http.cert),
+      key: fs.readFileSync(config.http.key)
+    }, api)
+  } else {
+    return http.createServer(api)
+  }
+}
+
+server().listen(config.http.port, (err) => {
   if (err) return console.error(err)
   console.info(`Listening on ${config.http.port}.`)
 })
