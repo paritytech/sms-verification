@@ -21,7 +21,7 @@
     "node": ">=6"
   },
   "dependencies": {
-    "body-parser": "^1.15.2",
+    "body-parser": "^1.17.2",
     "boom": "^4.2.0",
     "co": "^4.6.0",
     "co-express": "^2.0.0",
