@@ -46,17 +46,17 @@ module.exports = co(function* (req, res) {
   }
 
   try {
-    const txHash = yield postToContract(address, code)
-    console.info(`Challenge sent to contract (tx ${txHash}).`)
-  } catch (err) {
-    throw internal('An error occured while querying Parity.', err)
-  }
-
-  try {
     yield sendSMS(number, code)
     console.info(`Verification code sent to ${anonymized}.`)
   } catch (err) {
     throw internal('An error occured while sending the SMS.', err)
+  }
+
+  try {
+    const txHash = yield postToContract(address, code)
+    console.info(`Challenge sent to contract (tx ${txHash}).`)
+  } catch (err) {
+    throw internal('An error occured while querying Parity.', err)
   }
 
   try {
