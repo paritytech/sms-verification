@@ -25,7 +25,7 @@
     "boom": "^5.0.0",
     "co": "^4.6.0",
     "co-express": "^2.0.0",
-    "config": "^1.24.0",
+    "config": "^2.0.0",
     "corser": "^2.0.1",
     "express": "^4.14.0",
     "fetch-ponyfill": "^4.0.0",
