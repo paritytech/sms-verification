@@ -36,7 +36,7 @@
     "nocache": "^2.0.0",
     "solc": "^0.4.4",
     "spdy": "^3.4.4",
-    "standard": "^8.5.0",
+    "standard": "^12.0.1",
     "then-levelup": "^1.0.1",
     "twilio": "^3.0.0",
     "web3": "^0.19.0"
