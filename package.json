@@ -35,7 +35,7 @@
     "morgan": "^1.7.0",
     "nocache": "^2.0.0",
     "solc": "^0.4.4",
-    "spdy": "^3.4.4",
+    "spdy": "^4.0.0",
     "standard": "^8.5.0",
     "then-levelup": "^1.0.1",
     "twilio": "^3.0.0",
